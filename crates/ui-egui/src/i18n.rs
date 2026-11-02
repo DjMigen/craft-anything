@@ -24,6 +24,7 @@ pub static LANGUAGES: &[LangInfo] = &[
     LangInfo { code: "ja", name: "日本語", source: include_str!("ja.tsv") },
     LangInfo { code: "zh-hans", name: "简体中文", source: include_str!("i18n/zh-hans.tsv") },
     LangInfo { code: "zh-hant", name: "繁體中文", source: include_str!("i18n/zh-hant.tsv") },
+    LangInfo { code: "ru", name: "Русский", source: include_str!("i18n/ru.tsv") },
 ];
 
 /// Match a locale to a registered UI language. An explicit script wins over the region.
