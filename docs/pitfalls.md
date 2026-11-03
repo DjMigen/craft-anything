@@ -192,6 +192,15 @@ Compile the `.java` against Ghidra's jars (`javac -proc:none -cp <Ghidra/**/lib/
 live run. Ghidra also rejects project paths with a folder starting with a dot, as
 `tempfile::tempdir()`'s do: give live-test temp folders a plain prefix.
 
+**A check that read another worktree.** A PR was tested in a worktree that shared the main
+`target/`; `xtask` finds the repository through `CARGO_MANIFEST_DIR`, fixed when it's built, so
+afterwards `cargo xtask` in the main tree reused that binary and read the worktree's files. Once the
+worktree was removed it said "can't read docs/ROADMAP.md"; while it existed, every check that
+reads files itself (`pending`, `secrets`, `layers`, `locks`, `tools --check`…) would have looked
+at the wrong tree (the cargo commands `ci` runs use the folder they're started in). Give every
+worktree its own `CARGO_TARGET_DIR`, and rebuild `xtask` (or delete it from `target/`) after
+sharing one.
+
 **Stopping a long run leaves children behind** unless every program goes through
 `craft_anything_platform::process`. After stopping one, check that its child processes are gone.
 
@@ -411,6 +420,11 @@ mangled by the shell several times. Write multi-line edit scripts to a file and 
 **A Python edit that turned every line into CRLF.** `Path.write_text` on Windows writes CRLF
 line endings, so a scripted size change rewrote 19 LF files with CRLF (git only warned). Write
 with `write_bytes(s.encode())` and check `git ls-files --eol -m` after scripted edits.
+
+**A process search that found itself.** Looking for a helper by a word in its command line, with
+that word in the search's own command, listed the search: "a helper is left behind" after every
+run, with a new pid each time. The new pid was the clue. Build the pattern from parts
+(`'Set' + 'Thread'`), and don't stop processes by pattern on a machine where real builds may run.
 
 **A command that waits for a terminal.** `git stash show -p` opened a pager and an empty
 `python - <<'EOF'` heredoc opened the interactive interpreter; both sat waiting for input until
