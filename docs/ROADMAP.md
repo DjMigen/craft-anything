@@ -845,6 +845,8 @@ Gaps found while using the app for real projects.
 - [x] Simplified and Traditional Chinese UI catalogs, system-locale selection and translated
       tool-title search; catalog integrity, coverage checks and isolated language-switch tests
       ([localisation](localization.md))
+- [x] Russian UI (`ru.tsv`, Settings → General → Language); catalog integrity and key parity with
+       `zh-hans.tsv` ([localisation](localization.md))
 - [ ] A Simplified Chinese README (`README.zh.md`) translated from `README.md`, linked from the
       language switcher in `README.md` and `README.ja.md` — claimed: maple323, branch docs/readme-zh
 - [x] A Korean README (`README.ko.md`) was translated from `README.md` and linked from the
